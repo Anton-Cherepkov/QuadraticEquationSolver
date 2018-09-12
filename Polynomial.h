@@ -3,6 +3,13 @@
 
 #include <vector>
 
+/**
+ * @brief Корень уравнения
+ *
+ * В объекте этого класса хранится корень уравнения и его алгебраическая кратность.
+ *
+ * @tparam T Тип данных корня
+ */
 template <typename T>
 class Root {
 
@@ -53,9 +60,22 @@ class Root {
   size_t multiplicity_;
 };
 
+/**
+ * @brief Многочлен
+ *
+ * В объекте этого класса хранятся коэффициенты многочлена
+ *
+ * @warning Коэффициент при младшей степени имеет индекс 0
+ *
+ * @tparam T Тип данных коэффициентов
+ */
 template <typename T>
 class Polynomial {
 
+  /**
+   *
+   * Функция избавляет от ведущих нулей и поддерживает инвариант наличия хотя бы одного коэффициента
+   */
   void NormalizeCoefficients() {
     for (size_t i = coefficients_.size() - 1; i > 0; --i) {
       if (coefficients_[i] == IDENTITY_ELEMENT) {
@@ -106,10 +126,19 @@ class Polynomial {
     return coefficients_ == other.coefficients_;
   }
 
+  /**
+   *
+   * @return Степень многочлена
+   */
   size_t GetDegree() const {
     return coefficients_.size() - 1;
   }
 
+  /**
+   * Обновляет значение коэффициента
+   * @param index Индекс коэффициента
+   * @param value Новое значение коэффициента
+   */
   void SetCoefficient(size_t index, const T& value) {
     if (index >= coefficients_.size()) {
       coefficients_.resize(index + 1, IDENTITY_ELEMENT);
@@ -118,14 +147,29 @@ class Polynomial {
     NormalizeCoefficients();
   }
 
+  /**
+   * Получить значение коэффициента по индексу
+   * @param index Индекс коэффициента
+   * @return Значение коэффициента
+   */
   const T& GetCoefficient(size_t index) const {
     return coefficients_.at(index);
   }
 
+  /**
+   * Получить значение коэффициента по индексу
+   * @param index Индекс коэффициента
+   * @return Значение коэффициента
+   */
   const T& operator [](size_t index) const {
     return coefficients_.at(index);
   }
 
+  /**
+   * Проверка, является ли значение корнем этого многочлена
+   * @param root Проверяемое значение
+   * @return True, если является. False иначе.
+   */
   bool HasRoot(const Root<T>& root) const {
     T sum = coefficients_[0];
     T current_power = root.GetValue();
