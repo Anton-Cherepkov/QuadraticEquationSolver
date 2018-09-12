@@ -13,8 +13,18 @@
 #define COUT if (0) std::cout
 #endif
 
+/**
+ * Класс-исключение для ситуаций, когда EquationSolver не умеет решать уравнение такого типа
+ */
 class UnsupportedPolynomiaDegreeException : public std::exception {};
 
+/**
+ * @brief Решение уравнения
+ *
+ * Объект данного класса хранит корни
+ *
+ * @tparam T Тип данных ответа
+ */
 template <typename T>
 class EquationSolution {
   std::vector<Root<T>> roots_;
@@ -23,19 +33,35 @@ class EquationSolution {
   EquationSolution() = default;
   ~EquationSolution() = default;
 
+  /**
+   * Получить все корни
+   * @return Все корни
+   */
   const std::vector<Root<T>>& GetRoots() const {
     return roots_;
   }
 
+  /**
+   * Добавить новый корень к текущему списку корней
+   * @param root Новый корень
+   */
   void AddRoot(const Root<T>& root) {
     roots_.push_back(root);
   }
 
+  /**
+   * Добавить новый корень к текущему списку корней
+   * @param root Новый корень
+   */
   void AddRoot(Root<T>&& root) {
     roots_.push_back(std::move(root));
   }
 };
 
+/**
+ * Синглтон, решающий уравнения
+ * @tparam T Тип данных коэффициентов решаемого уравнения
+ */
 template <typename T>
 class EquationSolver;
 
@@ -127,6 +153,11 @@ class EquationSolver<double> {
 
 const double EquationSolver<double>::EPS = 1e-6;
 
+/**
+ * Вывести на экран все корни
+ * @tparam T Тип данных
+ * @param solution Корни для печати
+ */
 template <typename T>
 void PrintRoots(const EquationSolution<T>& solution) {
   const auto& roots = solution.GetRoots();
