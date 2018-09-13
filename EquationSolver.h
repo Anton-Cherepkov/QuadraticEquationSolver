@@ -14,7 +14,9 @@
 #endif
 
 /**
- * Класс-исключение для ситуаций, когда EquationSolver не умеет решать уравнение такого типа
+ * @brief Неподдерживаемая степень многочлена
+ *
+ * Класс-исключение для ситуаций, когда EquationSolver не умеет решать уравнение данной степени
  */
 class UnsupportedPolynomiaDegreeException : public std::exception {};
 
@@ -59,12 +61,18 @@ class EquationSolution {
 };
 
 /**
- * Синглтон, решающий уравнения
+ * @brief Решатель уравнения
+ *
  * @tparam T Тип данных коэффициентов решаемого уравнения
  */
 template <typename T>
 class EquationSolver;
 
+/**
+ * @brief Спецификация для уравнений с вещественными коэффициентами
+ *
+ * @warning Класс реализован как синглтон
+ */
 template <>
 class EquationSolver<double> {
 
@@ -123,11 +131,23 @@ class EquationSolver<double> {
   EquationSolver(EquationSolver const&) = delete;
   EquationSolver& operator =(EquationSolver const&) = delete;
 
+  /**
+   * Получить экземляр синлгтона решателя
+   * @return
+   */
   static EquationSolver& GetInstance() {
     static EquationSolver equationSolver;
     return equationSolver;
   }
 
+  /**
+   * Ищет корни многочлена
+   *
+   * @warning На данный момент поддерживаются многочлены степени не более 2
+   *
+   * @param polynomial Многочлен
+   * @return Корни
+   */
   EquationSolution<double> Solve(const Polynomial<double>& polynomial) const {
     EquationSolution<double> solution;
     switch (polynomial.GetDegree()) {
