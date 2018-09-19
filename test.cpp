@@ -19,7 +19,7 @@ void printResult(vector<double>& result) {
 }
 
 int main() {
-    freopen("in.txt", "rt", stdin);
+    freopen("tests.txt", "rt", stdin);
     int n;
     EquationSolver<double>& solver = EquationSolver<double>::GetInstance();
     cin >> n;
